@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        @apply text-gray-600 bg-gray-200;
+    }
+
+    a {
+        @apply text-green-700;
+    }
+
+    a:hover {
+        @apply underline;
+    }
+}
+
+@layer components {
+    .login-form {
+        @apply p-4 bg-white rounded-md max-w-[350px];
+    }
+
+    .text-field {
+        @apply border border-gray-400 px-2 rounded-md outline-0;
+    }
+
+    .text-field:focus {
+        @apply border-blue-400;
+    }
+
+    .btn {
+        @apply border-2 border-gray-400 px-2 rounded-md;
+    }
+
+    .btn:hover {
+        @apply scale-105;
+    }
+
+    .btn:active {
+        @apply opacity-80;
+    }
+
+    .btn-primary {
+        @apply text-white bg-blue-500 border-blue-400;
+    }
+
+    .btn:disabled {
+        @apply opacity-50 cursor-not-allowed scale-100;
+    }
+}
+
+@layer utilities {
+
+}
