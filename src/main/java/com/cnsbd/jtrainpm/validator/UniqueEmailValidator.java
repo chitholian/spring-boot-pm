@@ -1,5 +1,6 @@
 package com.cnsbd.jtrainpm.validator;
 
+import com.cnsbd.jtrainpm.annotation.UniqueEmail;
 import com.cnsbd.jtrainpm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 

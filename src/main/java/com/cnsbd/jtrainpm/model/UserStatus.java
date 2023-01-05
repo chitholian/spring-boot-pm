@@ -25,8 +25,8 @@ public class UserStatus {
 
     public static UserStatus getDefault() {
         UserStatus status = new UserStatus();
-        status.id = INACTIVE;
-        status.title = "Inactive";
+        status.id = ACTIVE;
+        status.title = "Active";
         return status;
     }
 }

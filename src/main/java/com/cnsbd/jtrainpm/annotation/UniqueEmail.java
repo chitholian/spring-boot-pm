@@ -1,4 +1,6 @@
-package com.cnsbd.jtrainpm.validator;
+package com.cnsbd.jtrainpm.annotation;
+
+import com.cnsbd.jtrainpm.validator.UniqueEmailValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

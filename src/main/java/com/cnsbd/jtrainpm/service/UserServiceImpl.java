@@ -1,7 +1,9 @@
 package com.cnsbd.jtrainpm.service;
 
-import com.cnsbd.jtrainpm.dto.LoginDTO;
-import com.cnsbd.jtrainpm.dto.RegisterDTO;
+import com.cnsbd.jtrainpm.dto.IUserInfo;
+import com.cnsbd.jtrainpm.dto.IUserProject;
+import com.cnsbd.jtrainpm.dto.LoginRequest;
+import com.cnsbd.jtrainpm.dto.RegisterRequest;
 import com.cnsbd.jtrainpm.exception.AuthFailedException;
 import com.cnsbd.jtrainpm.model.Role;
 import com.cnsbd.jtrainpm.model.User;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,12 +28,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(RegisterDTO body) {
+    public User createUser(RegisterRequest body) {
         Role role = new Role();
         role.setId(Role.DEVELOPER);
 
         User user = new User();
-        user.setApproved(false);
+        user.setApproved(true);
         user.setName(body.getName());
         user.setEmail(body.getEmail());
         user.setPassword(body.getPassword());
@@ -41,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(LoginDTO body) throws AuthFailedException {
+    public User login(LoginRequest body) throws AuthFailedException {
         User user = userRepo.findByUsername(body.getUsername());
         if (user == null) user = userRepo.findByEmail(body.getUsername());
         if (user == null) throw new AuthFailedException("User not found.");
@@ -70,5 +73,15 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean enable(Long id) {
         return userRepo.enableById(id) > 0;
+    }
+
+    @Override
+    public List<IUserProject> getProjects(Long userId) {
+        return userRepo.getProjects(userId);
+    }
+
+    @Override
+    public Optional<IUserInfo> findById(Long userId) {
+        return userRepo.findByUserId(userId);
     }
 }

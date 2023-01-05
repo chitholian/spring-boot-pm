@@ -1,6 +1,6 @@
 package com.cnsbd.jtrainpm.dto;
 
-import com.cnsbd.jtrainpm.validator.UniqueEmail;
+import com.cnsbd.jtrainpm.annotation.UniqueEmail;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Data
-public class RegisterDTO {
+public class RegisterRequest {
     @NotBlank(message = "Name is required")
     private String name;
     @NotBlank(message = "Email is required")
