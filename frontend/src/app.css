@@ -48,6 +48,10 @@
     .btn:disabled {
         @apply opacity-50 cursor-not-allowed scale-100;
     }
+
+    .form-err {
+        @apply text-red-500 text-sm;
+    }
 }
 
 @layer utilities {

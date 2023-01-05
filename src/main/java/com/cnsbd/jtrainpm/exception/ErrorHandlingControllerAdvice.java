@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -62,6 +63,16 @@ class ErrorHandlingControllerAdvice {
     @ResponseBody
     JsonResponse onEntityNotFoundException(EntityNotFoundException e) {
         return new JsonResponse(404, new Object() {
+            @JsonProperty
+            String error = e.getMessage();
+        });
+    }
+
+    @ExceptionHandler(value = {EntityExistsException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    JsonResponse onEntityExistsException(EntityExistsException e) {
+        return new JsonResponse(403, new Object() {
             @JsonProperty
             String error = e.getMessage();
         });

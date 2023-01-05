@@ -2,27 +2,50 @@
     <form method="post" class="login-form">
         <div class="text-center">
             <i class="p-5 fas fa-user text-5xl rounded-full ring-1 ring-blue-400 text-blue-400"></i>
+            <br>
+            <div class="text-xl mt-2">User Login</div>
         </div>
+        {#if error}
+            <div class="text-red-500 m-1 text-center">{error}</div>
+        {/if}
         <div class="text-input">
             <label for="username">Username</label>
-            <input type="text" name="username" id="username" class="text-field w-full" bind:value={username}>
+            <input type="text" name="username" id="username" class="text-field w-full" bind:value={form.username}>
         </div>
         <div class="text-input mt-2">
             <label for="username">Password</label>
-            <input type="password" name="password" id="password" class="text-field w-full" bind:value={password}>
+            <input type="password" name="password" id="password" class="text-field w-full" bind:value={form.password}>
         </div>
         <div class="flex items-center justify-between mt-2">
-            <a href="/forgot-password" class="link">Forgot Password ?</a>
-            <button type="submit" class="btn btn-primary" disabled={!username || !password}>
+            <a href="/forgot-password" class="invisible">Forgot Password ?</a>
+            <button type="submit" class="btn btn-primary" disabled={loaders > 0 || !form.username || !form.password}>
                 Login <i class="fas fa-sign-in"></i>
             </button>
+        </div>
+        <div class="mt-2">
+            Don't have an account ? <a href="/register">Create account.</a>
         </div>
     </form>
 </div>
 <script>
-    let username = '', password = '';
+    import authService from "$lib/services/auth.service.js";
+    import {goto} from "$app/navigation";
+    import {extractErr} from "$lib/helpers.js";
+
+    let form = {
+        username: '',
+        password: '',
+    };
+
+    let error = '', errors = {}, loaders = 0;
 
     function submitForm() {
-        alert('You have entered username: '+username+', password: '+password)
+        authService.login(form.username, form.password).then(({data}) => {
+            if (data.status === 200) {
+                goto('/', {replaceState: true})
+            }
+        }).catch(err => {
+            [error, errors] = extractErr(err)
+        }).finally(() => loaders--)
     }
 </script>

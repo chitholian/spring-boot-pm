@@ -1,17 +1,22 @@
 package com.cnsbd.jtrainpm.service;
 
+import com.cnsbd.jtrainpm.dto.CreateProjectRequest;
 import com.cnsbd.jtrainpm.dto.IProjectUser;
 import com.cnsbd.jtrainpm.dto.IUserProject;
 import com.cnsbd.jtrainpm.model.Project;
+import com.cnsbd.jtrainpm.model.ProjectStatus;
 import com.cnsbd.jtrainpm.model.User;
 import com.cnsbd.jtrainpm.repository.ProjectRepository;
 import com.cnsbd.jtrainpm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -60,5 +65,45 @@ public class ProjectServiceImpl implements ProjectService {
             count += projectRepository.removeMemberByUserId(id, uid);
         }
         return count > 0;
+    }
+
+    @Override
+    public Boolean startNow(Long id) {
+        Optional<Project> op = projectRepository.findById(id);
+        if (!op.isPresent()) throw new EntityNotFoundException("Project not found");
+        Project p = op.get();
+        if (!Objects.equals(p.getStatus().getId(), ProjectStatus.PRE)) return false;
+        p.setStatus(new ProjectStatus(ProjectStatus.STARTED, "Started"));
+        p.setStartDateTime(new Date());
+        projectRepository.saveAndFlush(p);
+        return true;
+    }
+
+    @Override
+    public Boolean endNow(Long id) {
+        Optional<Project> op = projectRepository.findById(id);
+        if (!op.isPresent()) throw new EntityNotFoundException("Project not found");
+        Project p = op.get();
+        if (!Objects.equals(p.getStatus().getId(), ProjectStatus.STARTED)) return false;
+        p.setStatus(new ProjectStatus(ProjectStatus.ENDED, "Ended"));
+        p.setEndDateTime(new Date());
+        projectRepository.saveAndFlush(p);
+        return true;
+    }
+
+    @Override
+    public Project createProject(CreateProjectRequest body) {
+        // Check duplicate name.
+        if (projectRepository.findByName(body.getName()).isPresent()) throw new EntityExistsException("Project name already exists");
+        Project p = new Project(null, body.getName(), body.getIntro(), body.getDescription(), null, null, null, null, null);
+        if (body.getStartNow()) {
+            p.setStartDateTime(new Date());
+            p.setStatus(new ProjectStatus(ProjectStatus.STARTED, "Started"));
+        } else {
+            p.setStatus(new ProjectStatus(ProjectStatus.PRE, "Pre"));
+        }
+        p.setOwner(User.builder().id(1L).build());
+        projectRepository.saveAndFlush(p);
+        return p;
     }
 }
