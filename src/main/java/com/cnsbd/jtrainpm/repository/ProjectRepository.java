@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
-    @Query("SELECT t.id as id, t.name as name, t.email as email FROM Project p INNER JOIN p.members m INNER JOIN User t ON t.id = m.id")
+    @Query("SELECT t.id as id, t.name as name, t.email as email FROM Project p INNER JOIN p.members m INNER JOIN User t ON t.id = m.id WHERE p.id = :id")
     List<IProjectUser> getMembers(@Param("id") Long projectId);
 
     @Query(value = "SELECT t.id as id, t.status.id as statusId, t.status.title as statusName," +
@@ -23,9 +23,9 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     Optional<Project> findById(Long id);
 
-    @Modifying(flushAutomatically = true)
+    @Modifying
     @Query(value = "DELETE FROM projects_members WHERE project_id = :pid AND members_id = :mid", nativeQuery = true)
-    Integer removeMemberByUserId(@Param("pid") Long id, @Param("mid") Long uid);
+    void removeMemberByUserId(@Param("pid") Long id, @Param("mid") Long uid);
 
     @Modifying(flushAutomatically = true)
     @Query(value = "INSERT INTO projects_members (project_id, members_id, member_of_projects_id) " +

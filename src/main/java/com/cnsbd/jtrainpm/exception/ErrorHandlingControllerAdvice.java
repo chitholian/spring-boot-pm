@@ -69,10 +69,20 @@ class ErrorHandlingControllerAdvice {
     }
 
     @ExceptionHandler(value = {EntityExistsException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
     JsonResponse onEntityExistsException(EntityExistsException e) {
         return new JsonResponse(403, new Object() {
+            @JsonProperty
+            String error = e.getMessage();
+        });
+    }
+
+    @ExceptionHandler(value = {Exception.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    JsonResponse onException(Exception e) {
+        return new JsonResponse(500, new Object() {
             @JsonProperty
             String error = e.getMessage();
         });

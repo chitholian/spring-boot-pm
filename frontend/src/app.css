@@ -30,7 +30,7 @@
     }
 
     .btn {
-        @apply border-2 border-gray-400 px-2 rounded-md;
+        @apply border px-2 rounded-md;
     }
 
     .btn:hover {
@@ -51,6 +51,81 @@
 
     .form-err {
         @apply text-red-500 text-sm;
+    }
+
+    table.bordered, table.bordered td, table.bordered th, table.bordered th table.bordered tr {
+        @apply border border-gray-400 border-collapse;
+    }
+
+    table.striped tr:nth-of-type(even) {
+        @apply bg-gray-200;
+    }
+
+    th, td {
+        @apply pl-1 pr-1;
+    }
+
+    th {
+        @apply bg-gray-600 text-white;
+    }
+
+    .main-container {
+        @apply w-screen h-screen flex justify-between items-start;
+    }
+
+    .main-container aside {
+        @apply h-full max-w-fit bg-white border-r border-gray-300;
+    }
+
+    .main-container main {
+        @apply h-full overflow-auto flex-grow;
+    }
+
+    .menu-item.active a {
+        @apply bg-gray-700 text-white !important;
+    }
+
+    .menu-item a {
+        @apply flex items-center h-8 p-2 no-underline text-gray-800 hover:bg-gray-300 border-b border-gray-300;
+    }
+
+    .menu-item i {
+        @apply min-w-[1.25rem];
+    }
+
+    .menu-item .menu-title {
+        @apply mx-2 hidden transition-all duration-200;
+    }
+
+    .menu.open .menu-title {
+        @apply inline;
+    }
+
+    .menu.open .menu-item a {
+        @apply border-transparent;
+    }
+
+    .card {
+        @apply bg-white p-2 m-1 rounded-md;
+    }
+
+    .page-loader {
+        @apply fixed top-0 left-0 h-1 w-full;
+        background: linear-gradient(90deg, red, green, blue);
+        transform-origin: 0 50%;
+        animation: indeterminateAnimation 1s infinite linear;
+    }
+
+    @keyframes indeterminateAnimation {
+        0% {
+            transform: translateX(0) scaleX(0);
+        }
+        40% {
+            transform: translateX(0) scaleX(0.4);
+        }
+        100% {
+            transform: translateX(100%) scaleX(0.5);
+        }
     }
 }
 

@@ -60,9 +60,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public Boolean removeMembers(Long id, List<Long> userIds) {
-        Integer count = 0;
+        int count = 0;
+        System.err.println(id + ":" + userIds);
         for (Long uid : userIds) {
-            count += projectRepository.removeMemberByUserId(id, uid);
+            projectRepository.removeMemberByUserId(id, uid);
+            count++;
         }
         return count > 0;
     }

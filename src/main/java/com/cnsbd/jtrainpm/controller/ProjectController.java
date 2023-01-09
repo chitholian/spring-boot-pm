@@ -42,40 +42,28 @@ public class ProjectController {
     }
 
     @DeleteMapping("/projects/{id}/remove-members")
-    public JsonResponse removeMembers(@PathVariable("id") Long id, @RequestBody @Valid RemoveMembersRequest body) {
+    public JsonResponse removeMembers(@PathVariable("id") Long id, @RequestBody @Valid RemoveMembersRequest body) throws Exception {
         if (projectService.removeMembers(id, body.getUserIds()))
             return new JsonResponse("Members removed successfully");
-        return new JsonResponse(500, new Object() {
-            @JsonProperty
-            private String error = "Failed to remove members";
-        });
+        throw new Exception("Failed to remove user");
     }
 
     @PostMapping("/projects")
-    public JsonResponse create(@RequestBody @Valid CreateProjectRequest body) {
+    public JsonResponse create(@RequestBody @Valid CreateProjectRequest body) throws Exception {
         Project p = projectService.createProject(body);
-        if (p == null) return new JsonResponse(500, new Object() {
-            @JsonProperty
-            private String error = "Failed to create project";
-        });
+        if (p == null) throw new Exception("Failed to create project");
         return new JsonResponse(projectRepository.findByProjectId(p.getId()));
     }
 
     @PatchMapping("/projects/{id}/start")
-    public JsonResponse start(@PathVariable("id") Long id) {
+    public JsonResponse start(@PathVariable("id") Long id) throws Exception {
         if (projectService.startNow(id)) return new JsonResponse("Project stared");
-        return new JsonResponse(500, new Object() {
-            @JsonProperty
-            private String error = "Failed to start project";
-        });
+        throw new Exception("Failed to start project");
     }
 
     @PatchMapping("/projects/{id}/end")
-    public JsonResponse endNow(@PathVariable("id") Long id) {
+    public JsonResponse endNow(@PathVariable("id") Long id) throws Exception {
         if (projectService.endNow(id)) return new JsonResponse("Project ended");
-        return new JsonResponse(500, new Object() {
-            @JsonProperty
-            private String error = "Failed to end project";
-        });
+        throw new Exception("Failed to end project");
     }
 }

@@ -18,7 +18,8 @@ import javax.persistence.Id;
 public class ProjectStatus {
     public static final Integer PRE = 0;
     public static final Integer STARTED = PRE + 1;
-    public static final Integer ENDED = STARTED + 1;
+    public static final Integer PAUSED = STARTED + 1;
+    public static final Integer ENDED = PAUSED + 1;
 
     @Id
     @JsonProperty
