@@ -24,4 +24,6 @@ public interface ProjectService {
     Boolean endNow(Long id);
 
     Project createProject(CreateProjectRequest body);
+
+    Boolean deleteItem(Long id);
 }

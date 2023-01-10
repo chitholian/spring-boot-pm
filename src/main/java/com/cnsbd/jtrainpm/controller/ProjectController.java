@@ -8,10 +8,12 @@ import com.cnsbd.jtrainpm.model.Project;
 import com.cnsbd.jtrainpm.repository.ProjectRepository;
 import com.cnsbd.jtrainpm.service.ProjectService;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.cnsbd.jtrainpm.annotation.ApiPrefixController;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 @ApiPrefixController
@@ -25,6 +27,13 @@ public class ProjectController {
     @GetMapping("/projects/{id}")
     public JsonResponse item(@PathVariable("id") Long id) {
         return new JsonResponse(projectService.getItem(id));
+    }
+
+    @DeleteMapping("/projects/{id}")
+    public JsonResponse deleteItem(@PathVariable("id") Long id) {
+        Boolean deleted = projectService.deleteItem(id);
+        if (!deleted) throw new EntityNotFoundException("Project not found or not owned by you");
+        return new JsonResponse("Deleted successfully");
     }
 
     @GetMapping("/projects/{id}/members")

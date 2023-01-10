@@ -96,7 +96,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project createProject(CreateProjectRequest body) {
         // Check duplicate name.
-        if (projectRepository.findByName(body.getName()).isPresent()) throw new EntityExistsException("Project name already exists");
+        if (projectRepository.findByName(body.getName()).isPresent())
+            throw new EntityExistsException("Project name already exists");
         Project p = new Project(null, body.getName(), body.getIntro(), body.getDescription(), null, null, null, null, null);
         if (body.getStartNow()) {
             p.setStartDateTime(new Date());
@@ -107,5 +108,12 @@ public class ProjectServiceImpl implements ProjectService {
         p.setOwner(User.builder().id(1L).build());
         projectRepository.saveAndFlush(p);
         return p;
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteItem(Long id) {
+        Long count = projectRepository.deleteByIdAndOwner_Id(id, 1L);
+        return count > 0;
     }
 }

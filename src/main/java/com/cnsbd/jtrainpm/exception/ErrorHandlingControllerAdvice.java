@@ -69,10 +69,10 @@ class ErrorHandlingControllerAdvice {
     }
 
     @ExceptionHandler(value = {EntityExistsException.class})
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     JsonResponse onEntityExistsException(EntityExistsException e) {
-        return new JsonResponse(403, new Object() {
+        return new JsonResponse(400, new Object() {
             @JsonProperty
             String error = e.getMessage();
         });

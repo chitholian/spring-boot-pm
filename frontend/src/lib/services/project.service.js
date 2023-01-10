@@ -30,5 +30,13 @@ export default {
         return axios.delete(Config.apiBase + '/projects/' + id + '/remove-members', {
             data: {userIds,}
         })
+    },
+    createProject(name, intro, description, startNow) {
+        return axios.post(Config.apiBase + '/projects', {
+            name, intro, description, startNow,
+        })
+    },
+    deleteProject(id) {
+        return axios.delete(Config.apiBase + '/projects/' + id)
     }
 }

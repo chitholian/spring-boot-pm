@@ -37,21 +37,29 @@
                 </strong>
             </div>
         </div>
-        {#if project.statusId !== 3}
-            <div class="mt-1 card">
-                {#if project.statusId === 0}
-                    <button class="btn rounded-md px-2 border-0 bg-green-500 text-white"
-                        on:click={startProject}>
-                        <i class="fas fa-play-circle"></i> Start Project
-                    </button>
-                {:else if project.statusId === 1}
-                    <button class="btn rounded-md px-2 border-0 bg-red-500 text-white"
-                            on:click={endProject}>
-                        <i class="fas fa-stop-circle"></i> End Project
-                    </button>
-                {/if}
+        {#if project.description}
+            <div class="card mt-1">
+                <div class="font-bold pb-2">Description</div>
+                {project.description}
             </div>
         {/if}
+        <div class="mt-1 card">
+            {#if project.statusId === 0}
+                <button class="btn rounded-md px-2 border-0 bg-green-500 text-white"
+                        on:click={startProject}>
+                    <i class="fas fa-play-circle"></i> Start Project
+                </button>
+            {:else if project.statusId === 1}
+                <button class="btn rounded-md px-2 border-0 bg-red-500 text-white"
+                        on:click={endProject}>
+                    <i class="fas fa-stop-circle"></i> End Project
+                </button>
+            {/if}
+            <button class="btn rounded-md px-2 border-0 bg-red-500 text-white float-right"
+                    on:click={deleteProject}>
+                <i class="fas fa-trash"></i> Delete This Project
+            </button>
+        </div>
     {:else if loaders > 0}
         <div class="text-center btn">Loading...</div>
     {/if}
@@ -66,6 +74,7 @@
     import {setMenu} from "$lib/stores/menu.store.js";
     import BasePage from "../../../components/BasePage.svelte";
     import {page} from "$app/stores";
+    import {goto} from "$app/navigation";
 
     onMount(() => {
         setMenu('projects')
@@ -93,11 +102,27 @@
         }).finally(() => loaders--)
     }
 
-    function endProject(item) {
+    function endProject() {
         loaders++
         projectService.endProject(project.id).then(({data}) => {
             fetchProject()
             alert('Project ended successfully')
+        }).catch(err => {
+            [error, errors] = extractErr(err)
+        }).finally(() => loaders--)
+    }
+
+    function deleteProject() {
+        let title = prompt('Enter exact title of the project to delete it permanently:')
+        if (title === undefined || title === null) return;
+        if (title !== project.projectName) {
+            alert('Incorrect title, deletion failed.');
+            return;
+        }
+        loaders++
+        projectService.deleteProject(project.id).then(({data}) => {
+            alert('Project deleted successfully')
+            goto('/projects', {replaceState: true})
         }).catch(err => {
             [error, errors] = extractErr(err)
         }).finally(() => loaders--)

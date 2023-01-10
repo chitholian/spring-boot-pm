@@ -3,9 +3,9 @@
         <div class="font-bold pb-2">
             List of Projects
             <div class="float-right">
-                <button class="btn">
+                <a role="button" class="btn" href="/projects/create">
                     <i class="fas fa-plus"></i> Create New
-                </button>
+                </a>
             </div>
         </div>
         <table class="w-full bordered striped">

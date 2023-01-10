@@ -37,4 +37,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Optional<Project> findByIdAndOwner_Id(Long id, Long userId);
 
     Optional<Project> findByName(String name);
+
+    Long deleteByIdAndOwner_Id(Long id, Long ownerId);
 }

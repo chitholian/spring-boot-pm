@@ -32,6 +32,9 @@
     .btn {
         @apply border px-2 rounded-md;
     }
+    a.btn {
+        @apply no-underline text-inherit;
+    }
 
     .btn:hover {
         @apply scale-105;
