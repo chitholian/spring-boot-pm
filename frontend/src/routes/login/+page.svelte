@@ -2,7 +2,7 @@
     <div class="flex w-screen h-screen justify-center items-center" on:submit|preventDefault={submitForm}>
         <form method="post" class="login-form">
             <div class="text-center">
-                <i class="p-5 fas fa-user text-5xl rounded-full ring-1 ring-blue-400 text-blue-400"></i>
+                <i class="fas fa-user stats-icon bg-blue-100"></i>
                 <br>
                 <div class="text-xl mt-2">User Login</div>
             </div>
@@ -34,6 +34,7 @@
     import {goto} from "$app/navigation";
     import {extractErr} from "$lib/helpers.js";
     import BasePage from "../../lib/components/BasePage.svelte";
+    import {user} from "$lib/stores/user.store.js";
 
     let form = {
         username: '',
@@ -45,6 +46,7 @@
     function submitForm() {
         authService.login(form.username, form.password).then(({data}) => {
             if (data.status === 200) {
+                $user = data.data.user;
                 goto('/', {replaceState: true})
             }
         }).catch(err => {

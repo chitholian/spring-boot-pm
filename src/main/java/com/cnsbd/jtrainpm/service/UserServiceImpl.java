@@ -9,7 +9,10 @@ import com.cnsbd.jtrainpm.model.Role;
 import com.cnsbd.jtrainpm.model.User;
 import com.cnsbd.jtrainpm.model.UserStatus;
 import com.cnsbd.jtrainpm.repository.UserRepository;
+import com.cnsbd.jtrainpm.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -83,5 +86,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<IUserInfo> findById(Long userId) {
         return userRepo.findByUserId(userId);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepo.findByUsername(username);
+        if (user == null) user = userRepo.findByEmail(username);
+        if (user == null) throw new UsernameNotFoundException("Username or Email not found");
+        return new UserDetailsImpl(user);
     }
 }

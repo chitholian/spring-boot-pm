@@ -44,7 +44,7 @@
     })
 </script>
 
-<BasePage title="Create Project">
+<BasePage title="Edit Project Info">
     {#if project}
         <form class="card max-w-[512px] m-auto mt-2" method="post" on:submit|preventDefault={submitForm}>
             <div class="font-bold pb-2">Edit Project Info</div>

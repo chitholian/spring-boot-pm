@@ -6,6 +6,7 @@ import com.cnsbd.jtrainpm.dto.RegisterRequest;
 import com.cnsbd.jtrainpm.exception.AuthFailedException;
 import com.cnsbd.jtrainpm.model.JsonResponse;
 import com.cnsbd.jtrainpm.model.User;
+import com.cnsbd.jtrainpm.repository.UserRepository;
 import com.cnsbd.jtrainpm.service.UserService;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,6 +22,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/users")
     public JsonResponse items() {
@@ -43,7 +46,7 @@ public class UserController {
         User usr = userService.login(body);
         return new JsonResponse(new Object() {
             @JsonProperty
-            private Object user = usr;
+            private Object user = userRepository.findByUserId(usr.getId());
             @JsonProperty
             private String message = "Login successful";
         });

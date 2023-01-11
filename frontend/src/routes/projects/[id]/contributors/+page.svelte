@@ -35,7 +35,7 @@
                 {/each}
                 {#if !items.length}
                     <tr>
-                        <td colspan="8" class="p-2 text-black bg-yellow-200 text-center">No Data Available</td>
+                        <td colspan="8" class="p-2 text-black bg-yellow-100 text-center">No Data Available</td>
                     </tr>
                 {/if}
                 </tbody>

@@ -62,7 +62,7 @@
             {/each}
             {#if !projects.length}
                 <tr>
-                    <td colspan="8" class="p-2 text-black bg-yellow-200 text-center">No Data Available</td>
+                    <td colspan="8" class="p-2 text-black bg-yellow-100 text-center">No Data Available</td>
                 </tr>
             {/if}
             </tbody>
@@ -76,9 +76,8 @@
     import {onMount} from "svelte";
     import projectService from "$lib/services/project.service.js";
     import {extractErr} from "$lib/helpers.js";
-    import BasePage from "../../lib/components/BasePage.svelte";
+    import BasePage from "$lib/components/BasePage.svelte";
     import {setMenu} from "$lib/stores/menu.store.js";
-    import {func} from "svelte-check";
 
     onMount(() => {
         setMenu('projects')

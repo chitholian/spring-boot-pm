@@ -6,11 +6,12 @@ import com.cnsbd.jtrainpm.dto.LoginRequest;
 import com.cnsbd.jtrainpm.dto.RegisterRequest;
 import com.cnsbd.jtrainpm.exception.AuthFailedException;
 import com.cnsbd.jtrainpm.model.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
     List<User> getItems();
 
     User createUser(RegisterRequest body);

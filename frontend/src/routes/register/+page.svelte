@@ -2,7 +2,7 @@
     <div class="flex w-screen h-screen justify-center items-center" on:submit|preventDefault={submitForm}>
         <form method="post" class="login-form">
             <div class="text-center">
-                <i class="p-5 fas fa-user text-5xl rounded-full ring-1 ring-blue-400 text-blue-400"></i>
+                <i class="fas fa-user stats-icon bg-green-100"></i>
                 <br>
                 <div class="text-xl mt-2">User Registration</div>
             </div>
