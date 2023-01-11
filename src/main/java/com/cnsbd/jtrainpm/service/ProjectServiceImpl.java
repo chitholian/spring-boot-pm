@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -76,7 +76,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project p = op.get();
         if (!Objects.equals(p.getStatus().getId(), ProjectStatus.PRE)) return false;
         p.setStatus(new ProjectStatus(ProjectStatus.STARTED, "Started"));
-        p.setStartDateTime(new Date());
+        p.setStartDateTime(LocalDateTime.now());
         projectRepository.saveAndFlush(p);
         return true;
     }
@@ -88,7 +88,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project p = op.get();
         if (!Objects.equals(p.getStatus().getId(), ProjectStatus.STARTED)) return false;
         p.setStatus(new ProjectStatus(ProjectStatus.ENDED, "Ended"));
-        p.setEndDateTime(new Date());
+        p.setEndDateTime(LocalDateTime.now());
         projectRepository.saveAndFlush(p);
         return true;
     }
@@ -98,9 +98,9 @@ public class ProjectServiceImpl implements ProjectService {
         // Check duplicate name.
         if (projectRepository.findByName(body.getName()).isPresent())
             throw new EntityExistsException("Project name already exists");
-        Project p = new Project(null, body.getName(), body.getIntro(), body.getDescription(), null, null, null, null, null);
+        Project p = new Project(null, body.getName(), body.getIntro(), body.getDescription(), null, null, null, LocalDateTime.now(),null, null);
         if (body.getStartNow()) {
-            p.setStartDateTime(new Date());
+            p.setStartDateTime(LocalDateTime.now());
             p.setStatus(new ProjectStatus(ProjectStatus.STARTED, "Started"));
         } else {
             p.setStatus(new ProjectStatus(ProjectStatus.PRE, "Pre"));
@@ -115,5 +115,27 @@ public class ProjectServiceImpl implements ProjectService {
     public Boolean deleteItem(Long id) {
         Long count = projectRepository.deleteByIdAndOwner_Id(id, 1L);
         return count > 0;
+    }
+
+    @Override
+    @Transactional
+    public Boolean updateItem(Long id, CreateProjectRequest body) {
+        // Check for duplicate title.
+        Optional<Project> po = projectRepository.findByName(body.getName());
+        if (po.isPresent() && !id.equals(po.get().getId()))
+            throw new EntityExistsException("Project name already exists");
+        po = projectRepository.findByIdAndOwner_Id(id, 1L);
+        if (!po.isPresent()) throw new EntityNotFoundException("Project not found");
+        Project project = po.get();
+        project.setName(body.getName());
+        project.setIntro(body.getIntro());
+        project.setDescription(body.getDescription());
+        projectRepository.saveAndFlush(project);
+        return true;
+    }
+
+    @Override
+    public void printItemList() {
+        // TODO: Not implemented.
     }
 }

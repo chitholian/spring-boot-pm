@@ -1,8 +1,8 @@
-<BasePage title="Project Contributors">
+<BasePage title="Project Members">
     {#if project}
         <div class="card">
             <div class="pb-1 font-bold">
-                Project Contributors :: {project.projectName}
+                Project Members :: <a href="/projects/{project.id}">{project.projectName}</a>
                 <div class="float-right">
                     Owner: {project.ownerName}
                 </div>
@@ -40,11 +40,15 @@
                 {/if}
                 </tbody>
             </table>
-            <div class="pt-2">
-                <button class="btn rounded-md px-1" title="Add Member">
-                    <i class="fas fa-user-plus"></i> Add Contributor
+            <form class="border rounded-md mt-2 p-2 flex justify-end" on:submit|preventDefault={addMember}>
+                <div class="text-input">
+                    <label for="email">Email Address</label>
+                    <input type="email" name="email" id="email" class="text-field" bind:value={emailToAdd} required>
+                </div>
+                <button class="btn ml-2" type="submit">
+                    <i class="fas fa-user-plus"></i> Add
                 </button>
-            </div>
+            </form>
             {#if error}
                 <div class="text-red-500 m-1 text-center">{error}</div>
             {/if}
@@ -55,7 +59,7 @@
     import projectService from "$lib/services/project.service.js";
     import {extractErr} from "$lib/helpers.js";
     import {page} from "$app/stores";
-    import BasePage from "../../../../components/BasePage.svelte";
+    import BasePage from "../../../../lib/components/BasePage.svelte";
     import {onMount} from "svelte";
     import {setMenu} from "$lib/stores/menu.store.js";
 
@@ -66,6 +70,7 @@
     let errors = {}, error = '', loaders = 0;
     let items = []
     let project = null
+    let emailToAdd = ''
 
     function fetchMembers() {
         loaders++
@@ -86,6 +91,7 @@
     }
 
     function removeUser(item) {
+        if (!confirm("Are you sure to remove " + item.name + ' ?')) return;
         loaders++
         projectService.removeMembers($page.params.id, [item.id]).then(({data}) => {
             fetchMembers()
@@ -98,4 +104,13 @@
         fetchProject()
         fetchMembers()
     })
+    function addMember() {
+        loaders++
+        projectService.addMembers($page.params.id, [emailToAdd]).then(({data}) => {
+            alert('Member added successfully')
+            fetchMembers()
+        }).catch(err => {
+            [error, errors] = extractErr(err)
+        }).finally(() => loaders--)
+    }
 </script>

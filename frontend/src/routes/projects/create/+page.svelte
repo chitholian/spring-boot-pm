@@ -1,5 +1,5 @@
 <script>
-    import BasePage from "../../../components/BasePage.svelte";
+    import BasePage from "../../../lib/components/BasePage.svelte";
     import projectService from "$lib/services/project.service.js";
     import {extractErr} from "$lib/helpers.js";
     import {goto} from "$app/navigation";

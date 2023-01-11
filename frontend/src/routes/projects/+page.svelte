@@ -2,6 +2,9 @@
     <div class="card">
         <div class="font-bold pb-2">
             List of Projects
+            <button class="btn" title="Print Report" on:click={printProjectReport}>
+                <i class="fas fa-print"></i>
+            </button>
             <div class="float-right">
                 <a role="button" class="btn" href="/projects/create">
                     <i class="fas fa-plus"></i> Create New
@@ -73,8 +76,9 @@
     import {onMount} from "svelte";
     import projectService from "$lib/services/project.service.js";
     import {extractErr} from "$lib/helpers.js";
-    import BasePage from "../../components/BasePage.svelte";
+    import BasePage from "../../lib/components/BasePage.svelte";
     import {setMenu} from "$lib/stores/menu.store.js";
+    import {func} from "svelte-check";
 
     onMount(() => {
         setMenu('projects')
@@ -93,6 +97,7 @@
     }
 
     function startProject(item) {
+        if(!confirm("Are you sure to START this project ?")) return;
         loaders++
         projectService.startProject(item.id).then(({data}) => {
             fetchProjects()
@@ -101,15 +106,8 @@
             [error, errors] = extractErr(err)
         }).finally(() => loaders--)
     }
+    function printProjectReport() {
 
-    function endProject(item) {
-        loaders++
-        projectService.endProject(item.id).then(({data}) => {
-            fetchProjects()
-            alert('Project ended successfully')
-        }).catch(err => {
-            [error, errors] = extractErr(err)
-        }).finally(() => loaders--)
     }
 
     onMount(() => {

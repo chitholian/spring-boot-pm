@@ -36,25 +36,29 @@ public class ProjectController {
         return new JsonResponse("Deleted successfully");
     }
 
+    @PatchMapping("/projects/{id}")
+    public JsonResponse updateItem(@PathVariable("id") Long id, @RequestBody @Valid CreateProjectRequest body) {
+        Boolean updated = projectService.updateItem(id, body);
+        if (!updated) throw new EntityNotFoundException("Project not found or not owned by you");
+        return new JsonResponse("Updated successfully");
+    }
+
     @GetMapping("/projects/{id}/members")
     public JsonResponse members(@PathVariable("id") Long id) {
         return new JsonResponse(projectService.getMembers(id));
     }
 
     @PatchMapping("/projects/{id}/add-members")
-    public JsonResponse addMembers(@PathVariable("id") Long id, @RequestBody @Valid AddMembersRequest body) {
+    public JsonResponse addMembers(@PathVariable("id") Long id, @RequestBody @Valid AddMembersRequest body) throws Exception {
         if (projectService.addMembers(id, body.getUserEmails())) return new JsonResponse("Members added successfully");
-        return new JsonResponse(500, new Object() {
-            @JsonProperty
-            private String error = "Failed to add members";
-        });
+        throw new Exception("Failed to add members");
     }
 
     @DeleteMapping("/projects/{id}/remove-members")
     public JsonResponse removeMembers(@PathVariable("id") Long id, @RequestBody @Valid RemoveMembersRequest body) throws Exception {
         if (projectService.removeMembers(id, body.getUserIds()))
             return new JsonResponse("Members removed successfully");
-        throw new Exception("Failed to remove user");
+        throw new Exception("Failed to remove users");
     }
 
     @PostMapping("/projects")
@@ -74,5 +78,11 @@ public class ProjectController {
     public JsonResponse endNow(@PathVariable("id") Long id) throws Exception {
         if (projectService.endNow(id)) return new JsonResponse("Project ended");
         throw new Exception("Failed to end project");
+    }
+
+    @GetMapping("/projects/report")
+    public JsonResponse printList() {
+        projectService.printItemList();
+        return null;
     }
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -30,13 +31,16 @@ public class Project {
     private String description;
 
     @Column
-    private Date startDateTime;
+    private LocalDateTime startDateTime;
 
     @Column
-    private Date endDateTime;
+    private LocalDateTime endDateTime;
 
     @ManyToOne
     private ProjectStatus status;
+
+    @Column
+    private LocalDateTime createdAt;
 
     @ManyToOne
     private User owner;

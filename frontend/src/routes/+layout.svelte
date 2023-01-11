@@ -1,6 +1,6 @@
 <script>
     import '../app.css'
-    import LeftMenu from "../components/LeftMenu.svelte";
+    import LeftMenu from "../lib/components/LeftMenu.svelte";
     import {loaders} from "$lib/stores/loader.store.js";
     import axios from "axios";
     import {goto} from "$app/navigation";

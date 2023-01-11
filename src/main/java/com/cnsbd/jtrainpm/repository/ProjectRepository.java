@@ -15,7 +15,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Query("SELECT t.id as id, t.name as name, t.email as email FROM Project p INNER JOIN p.members m INNER JOIN User t ON t.id = m.id WHERE p.id = :id")
     List<IProjectUser> getMembers(@Param("id") Long projectId);
 
-    @Query(value = "SELECT t.id as id, t.status.id as statusId, t.status.title as statusName," +
+    @Query(value = "SELECT t.id as id, t.createdAt as createdAt, t.status.id as statusId, t.status.title as statusName," +
             " t.members.size as memberCount, t.owner.id as ownerId, t.owner.name as ownerName, t.name as projectName," +
             " t.startDateTime as startDate, t.endDateTime as endDate, t.intro as intro, t.description as description" +
             " FROM Project t WHERE t.id = :id")

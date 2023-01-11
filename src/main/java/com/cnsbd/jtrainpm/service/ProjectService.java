@@ -26,4 +26,8 @@ public interface ProjectService {
     Project createProject(CreateProjectRequest body);
 
     Boolean deleteItem(Long id);
+
+    void printItemList();
+
+    Boolean updateItem(Long id, CreateProjectRequest body);
 }

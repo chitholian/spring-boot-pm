@@ -2,6 +2,7 @@ package com.cnsbd.jtrainpm.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public interface IUserProject {
@@ -20,9 +21,11 @@ public interface IUserProject {
     String getStatusName();
 
     @JsonFormat(pattern = "dd-MMM-yyyy")
-    Date getStartDate();
+    LocalDateTime getStartDate();
     @JsonFormat(pattern = "dd-MMM-yyyy")
-    Date getEndDate();
+    LocalDateTime getEndDate();
+    @JsonFormat(pattern = "dd-MMM-yyyy hh:mm a")
+    LocalDateTime getCreatedAt();
 
     String getIntro();
     String getDescription();

@@ -112,6 +112,10 @@
         @apply bg-white p-2 m-1 rounded-md;
     }
 
+    .stats-icon {
+        @apply text-5xl rounded-full h-[5rem] w-[5rem] inline-flex items-center justify-center;
+    }
+
     .page-loader {
         @apply fixed top-0 left-0 h-1 w-full;
         background: linear-gradient(90deg, red, green, blue);

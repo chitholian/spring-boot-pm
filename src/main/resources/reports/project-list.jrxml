@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Project_List" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0d556b90-a852-4be3-ae99-e7f0df2d3b02">
+    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+    <queryString language="SQL">
+        <![CDATA[SELECT * FROM projects]]>
+    </queryString>
+    <field name="id" class="java.lang.Long">
+        <property name="com.jaspersoft.studio.field.name" value="id"/>
+        <property name="com.jaspersoft.studio.field.label" value="id"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+    </field>
+    <field name="description" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.name" value="description"/>
+        <property name="com.jaspersoft.studio.field.label" value="description"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+    </field>
+    <field name="end_date_time" class="java.sql.Timestamp">
+        <property name="com.jaspersoft.studio.field.name" value="end_date_time"/>
+        <property name="com.jaspersoft.studio.field.label" value="end_date_time"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+    </field>
+    <field name="intro" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.name" value="intro"/>
+        <property name="com.jaspersoft.studio.field.label" value="intro"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+    </field>
+    <field name="name" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.name" value="name"/>
+        <property name="com.jaspersoft.studio.field.label" value="name"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+    </field>
+    <field name="start_date_time" class="java.sql.Timestamp">
+        <property name="com.jaspersoft.studio.field.name" value="start_date_time"/>
+        <property name="com.jaspersoft.studio.field.label" value="start_date_time"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+    </field>
+    <field name="owner_id" class="java.lang.Long">
+        <property name="com.jaspersoft.studio.field.name" value="owner_id"/>
+        <property name="com.jaspersoft.studio.field.label" value="owner_id"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+    </field>
+    <field name="status_id" class="java.lang.Integer">
+        <property name="com.jaspersoft.studio.field.name" value="status_id"/>
+        <property name="com.jaspersoft.studio.field.label" value="status_id"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+    </field>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="538" splitType="Stretch">
+            <staticText>
+                <reportElement x="127" y="20" width="300" height="30" uuid="cca4467e-60d1-43d5-9bd5-d79af3580366"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="20" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Projects Status]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="2" y="91" width="100" height="30" uuid="da906873-fcb0-4236-852e-a0f02c452de4"/>
+                <box>
+                    <topPen lineWidth="0.5"/>
+                    <leftPen lineWidth="0.5"/>
+                    <bottomPen lineWidth="0.5"/>
+                    <rightPen lineWidth="0.5"/>
+                </box>
+                <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="102" y="91" width="100" height="30" uuid="d8c87d14-e825-4a51-9279-10298da72eac"/>
+                <box>
+                    <topPen lineWidth="0.5"/>
+                    <leftPen lineWidth="0.5"/>
+                    <bottomPen lineWidth="0.5"/>
+                    <rightPen lineWidth="0.5"/>
+                </box>
+                <textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="202" y="91" width="100" height="30" uuid="68294ca8-5e44-4b7b-a882-be72eadf3752"/>
+                <box>
+                    <topPen lineWidth="0.5"/>
+                    <leftPen lineWidth="0.5"/>
+                    <bottomPen lineWidth="0.5"/>
+                    <rightPen lineWidth="0.5"/>
+                </box>
+                <textFieldExpression><![CDATA[$F{start_date_time}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="302" y="91" width="100" height="30" uuid="4ff1f910-de8a-4e8d-8a95-f040b95fa53d"/>
+                <box>
+                    <topPen lineWidth="0.5"/>
+                    <leftPen lineWidth="0.5"/>
+                    <bottomPen lineWidth="0.5"/>
+                    <rightPen lineWidth="0.5"/>
+                </box>
+                <textFieldExpression><![CDATA[$F{end_date_time}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="402" y="91" width="100" height="30" uuid="e2048f5b-752c-4fdb-b374-7ff1bdd2bfd5"/>
+                <box>
+                    <topPen lineWidth="0.5"/>
+                    <leftPen lineWidth="0.5"/>
+                    <bottomPen lineWidth="0.5"/>
+                    <rightPen lineWidth="0.5"/>
+                </box>
+                <textFieldExpression><![CDATA[$F{status_id}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="2" y="61" width="100" height="30" uuid="19323ea3-a87f-4a24-98b9-a7da7d926573"/>
+                <box>
+                    <topPen lineWidth="0.5"/>
+                    <leftPen lineWidth="0.5"/>
+                    <bottomPen lineWidth="0.5"/>
+                    <rightPen lineWidth="0.5"/>
+                </box>
+                <text><![CDATA[ID]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="102" y="61" width="100" height="30" uuid="1cf711c2-6f89-452f-9d97-5ebe06b73044"/>
+                <box>
+                    <topPen lineWidth="0.5"/>
+                    <leftPen lineWidth="0.5"/>
+                    <bottomPen lineWidth="0.5"/>
+                    <rightPen lineWidth="0.5"/>
+                </box>
+                <text><![CDATA[Name]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="203" y="61" width="100" height="30" uuid="3bc8ced8-fabe-451a-b436-3eeda3d09c95"/>
+                <box>
+                    <topPen lineWidth="0.5"/>
+                    <leftPen lineWidth="0.5"/>
+                    <bottomPen lineWidth="0.5"/>
+                    <rightPen lineWidth="0.5"/>
+                </box>
+                <text><![CDATA[Start Date]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="303" y="61" width="98" height="30" uuid="c91f0867-ebca-4ec4-b15d-bcbdaf7599fe"/>
+                <box>
+                    <topPen lineWidth="0.5"/>
+                    <leftPen lineWidth="0.5"/>
+                    <bottomPen lineWidth="0.5"/>
+                    <rightPen lineWidth="0.5"/>
+                </box>
+                <text><![CDATA[End Date]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="401" y="61" width="100" height="30" uuid="f3cf3297-c43e-4b4e-919d-f48fc70ac2e0"/>
+                <box>
+                    <topPen lineWidth="0.5"/>
+                    <leftPen lineWidth="0.5"/>
+                    <bottomPen lineWidth="0.5"/>
+                    <rightPen lineWidth="0.5"/>
+                </box>
+                <text><![CDATA[Status]]></text>
+            </staticText>
+        </band>
+    </title>
+</jasperReport>

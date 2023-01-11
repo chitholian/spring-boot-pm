@@ -3,29 +3,33 @@
         <div class="card">
             <div class="font-bold pb-1">
                 Project Details :: {project.projectName}
-                <button class="btn rounded-md px-1" title="Edit Project Info">
+                <a role="button" class="btn rounded-md px-1" title="Edit Project Info"
+                   href="/projects/{project.id}/edit">
                     <i class="fas fa-edit"></i>
-                </button>
+                </a>
                 <div class="float-right">
-                    <button class="btn rounded-md px-1" title="Add Member">
-                        <i class="fas fa-user-plus"></i>
-                    </button>
+                    <a href="/projects/{project.id}/contributors" role="button" class="btn rounded-md px-1"
+                       title="Add Member"><i class="fas fa-user-plus"></i>
+                    </a>
                 </div>
             </div>
             <div class="text-sm italic">{project.intro}</div>
         </div>
         <div class="flex justify-center text-center">
             <div class="basis-1/3 m-1 card">
+                <i class="fas fa-user stats-icon bg-blue-100"></i> <br>
                 Owner <br>
                 <strong>{project.ownerName}</strong>
             </div>
             <div class="basis-1/3 m-1 card">
+                <i class="fas fa-users stats-icon bg-green-100"></i> <br>
                 Contributors <br>
                 <a href="/projects/{project.id}/contributors" title="Show Contributors">
                     <strong class="text-2xl">{project.memberCount + 1}</strong>
                 </a>
             </div>
             <div class="basis-1/3 m-1 card">
+                <i class="fas fa-bars-progress stats-icon bg-red-100"></i> <br>
                 Status <br>
                 <strong>
                     {project.statusName}
@@ -37,12 +41,13 @@
                 </strong>
             </div>
         </div>
-        {#if project.description}
-            <div class="card mt-1">
+        <div class="card mt-1 mb-2">
+            Created At: <em>{project.createdAt}</em>
+            {#if project.description}
                 <div class="font-bold pb-2">Description</div>
                 {project.description}
-            </div>
-        {/if}
+            {/if}
+        </div>
         <div class="mt-1 card">
             {#if project.statusId === 0}
                 <button class="btn rounded-md px-2 border-0 bg-green-500 text-white"
@@ -59,6 +64,7 @@
                     on:click={deleteProject}>
                 <i class="fas fa-trash"></i> Delete This Project
             </button>
+            <div class="clear-both"></div>
         </div>
     {:else if loaders > 0}
         <div class="text-center btn">Loading...</div>
@@ -72,7 +78,7 @@
     import projectService from "$lib/services/project.service.js";
     import {extractErr} from "$lib/helpers.js";
     import {setMenu} from "$lib/stores/menu.store.js";
-    import BasePage from "../../../components/BasePage.svelte";
+    import BasePage from "../../../lib/components/BasePage.svelte";
     import {page} from "$app/stores";
     import {goto} from "$app/navigation";
 
@@ -93,6 +99,7 @@
     }
 
     function startProject() {
+        if (!confirm("Are you sure to START this project ?")) return;
         loaders++
         projectService.startProject(project.id).then(({data}) => {
             fetchProject()
@@ -103,6 +110,7 @@
     }
 
     function endProject() {
+        if (!confirm("Are you sure to END this project ?")) return;
         loaders++
         projectService.endProject(project.id).then(({data}) => {
             fetchProject()

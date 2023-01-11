@@ -31,6 +31,11 @@ export default {
             data: {userIds,}
         })
     },
+    addMembers(id, emails) {
+        return axios.patch(Config.apiBase + '/projects/' + id + '/add-members', {
+            userEmails: emails,
+        })
+    },
     createProject(name, intro, description, startNow) {
         return axios.post(Config.apiBase + '/projects', {
             name, intro, description, startNow,
@@ -38,5 +43,10 @@ export default {
     },
     deleteProject(id) {
         return axios.delete(Config.apiBase + '/projects/' + id)
+    },
+    editProject(id, name, intro, description) {
+        return axios.patch(Config.apiBase + '/projects/' + id, {
+            name, intro, description,
+        })
     }
 }

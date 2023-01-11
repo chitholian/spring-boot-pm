@@ -33,7 +33,7 @@
     import authService from "$lib/services/auth.service.js";
     import {goto} from "$app/navigation";
     import {extractErr} from "$lib/helpers.js";
-    import BasePage from "../../components/BasePage.svelte";
+    import BasePage from "../../lib/components/BasePage.svelte";
 
     let form = {
         username: '',
