@@ -139,9 +139,4 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.saveAndFlush(project);
         return true;
     }
-
-    @Override
-    public void printItemList() {
-        // TODO: Not implemented.
-    }
 }

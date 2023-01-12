@@ -88,6 +88,7 @@
     import BasePage from "$lib/components/BasePage.svelte";
     import {setMenu} from "$lib/stores/menu.store.js";
     import {user} from "$lib/stores/user.store.js";
+    import reportService from "$lib/services/report.service.js";
 
     onMount(() => {
         setMenu('projects')
@@ -117,7 +118,7 @@
     }
 
     function printProjectReport() {
-
+        reportService.openProjectListReport()
     }
 
     onMount(() => {

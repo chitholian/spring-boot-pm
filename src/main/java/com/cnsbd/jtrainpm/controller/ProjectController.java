@@ -87,10 +87,4 @@ public class ProjectController {
         if (projectService.endNow(id)) return new JsonResponse("Project ended");
         throw new Exception("Failed to end project");
     }
-
-    @GetMapping("/projects/report")
-    public JsonResponse printList() {
-        projectService.printItemList();
-        return null;
-    }
 }
