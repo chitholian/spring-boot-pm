@@ -3,15 +3,17 @@
         <div class="card">
             <div class="font-bold pb-1">
                 Project Details :: {project.projectName}
-                <a role="button" class="btn rounded-md px-1" title="Edit Project Info"
-                   href="/projects/{project.id}/edit">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <div class="float-right">
-                    <a href="/projects/{project.id}/contributors" role="button" class="btn rounded-md px-1"
-                       title="Add Member"><i class="fas fa-user-plus"></i>
+                {#if project.ownerId === $user.id}
+                    <a role="button" class="btn rounded-md px-1" title="Edit Project Info"
+                       href="/projects/{project.id}/edit">
+                        <i class="fas fa-edit"></i>
                     </a>
-                </div>
+                    <div class="float-right">
+                        <a href="/projects/{project.id}/contributors" role="button" class="btn rounded-md px-1"
+                           title="Add Member"><i class="fas fa-user-plus"></i>
+                        </a>
+                    </div>
+                {/if}
             </div>
             <div class="text-sm italic">{project.intro}</div>
         </div>
@@ -48,24 +50,26 @@
                 {project.description}
             {/if}
         </div>
-        <div class="mt-1 card">
-            {#if project.statusId === 0}
-                <button class="btn rounded-md px-2 border-0 bg-green-500 text-white"
-                        on:click={startProject}>
-                    <i class="fas fa-play-circle"></i> Start Project
+        {#if project.ownerId === $user.id}
+            <div class="mt-1 card">
+                {#if project.statusId === 0}
+                    <button class="btn rounded-md px-2 border-0 bg-green-500 text-white"
+                            on:click={startProject}>
+                        <i class="fas fa-play-circle"></i> Start Project
+                    </button>
+                {:else if project.statusId === 1}
+                    <button class="btn rounded-md px-2 border-0 bg-red-500 text-white"
+                            on:click={endProject}>
+                        <i class="fas fa-stop-circle"></i> End Project
+                    </button>
+                {/if}
+                <button class="btn rounded-md px-2 border-0 bg-red-500 text-white float-right"
+                        on:click={deleteProject}>
+                    <i class="fas fa-trash"></i> Delete This Project
                 </button>
-            {:else if project.statusId === 1}
-                <button class="btn rounded-md px-2 border-0 bg-red-500 text-white"
-                        on:click={endProject}>
-                    <i class="fas fa-stop-circle"></i> End Project
-                </button>
-            {/if}
-            <button class="btn rounded-md px-2 border-0 bg-red-500 text-white float-right"
-                    on:click={deleteProject}>
-                <i class="fas fa-trash"></i> Delete This Project
-            </button>
-            <div class="clear-both"></div>
-        </div>
+                <div class="clear-both"></div>
+            </div>
+        {/if}
     {:else if loaders > 0}
         <div class="text-center btn">Loading...</div>
     {/if}
@@ -81,6 +85,7 @@
     import BasePage from "../../../lib/components/BasePage.svelte";
     import {page} from "$app/stores";
     import {goto} from "$app/navigation";
+    import {user} from "$lib/stores/user.store.js";
 
     onMount(() => {
         setMenu('projects')

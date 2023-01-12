@@ -8,6 +8,7 @@ import com.cnsbd.jtrainpm.model.ProjectStatus;
 import com.cnsbd.jtrainpm.model.User;
 import com.cnsbd.jtrainpm.repository.ProjectRepository;
 import com.cnsbd.jtrainpm.repository.UserRepository;
+import com.cnsbd.jtrainpm.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +29,8 @@ public class ProjectServiceImpl implements ProjectService {
     private UserRepository userRepository;
 
     @Override
-    public List<IUserProject> getItems(Long userId) {
-        return userRepository.getProjects(userId);
+    public List<IUserProject> getItems() {
+        return userRepository.getProjects(UserDetailsImpl.getCurrentUserId());
     }
 
     @Override
@@ -39,12 +40,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Optional<IUserProject> getItem(Long id) {
-        return projectRepository.findByProjectId(id);
+        return projectRepository.findByProjectId(id, UserDetailsImpl.getCurrentUserId());
     }
 
     @Override
     @Transactional
     public Boolean addMembers(Long id, List<String> userEmails) {
+        if (!projectRepository.findByIdAndOwner_Id(id, UserDetailsImpl.getCurrentUserId()).isPresent()) {
+            throw new EntityNotFoundException("Project not found");
+        }
         int count = 0;
         for (String email : userEmails) {
             User user = userRepository.findByEmail(email);
@@ -60,8 +64,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public Boolean removeMembers(Long id, List<Long> userIds) {
+        if (!projectRepository.findByIdAndOwner_Id(id, UserDetailsImpl.getCurrentUserId()).isPresent()) {
+            throw new EntityNotFoundException("Project not found");
+        }
         int count = 0;
-        System.err.println(id + ":" + userIds);
         for (Long uid : userIds) {
             projectRepository.removeMemberByUserId(id, uid);
             count++;
@@ -71,7 +77,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Boolean startNow(Long id) {
-        Optional<Project> op = projectRepository.findById(id);
+        Optional<Project> op = projectRepository.findByIdAndOwner_Id(id, UserDetailsImpl.getCurrentUserId());
         if (!op.isPresent()) throw new EntityNotFoundException("Project not found");
         Project p = op.get();
         if (!Objects.equals(p.getStatus().getId(), ProjectStatus.PRE)) return false;
@@ -83,7 +89,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Boolean endNow(Long id) {
-        Optional<Project> op = projectRepository.findById(id);
+        Optional<Project> op = projectRepository.findByIdAndOwner_Id(id, UserDetailsImpl.getCurrentUserId());
         if (!op.isPresent()) throw new EntityNotFoundException("Project not found");
         Project p = op.get();
         if (!Objects.equals(p.getStatus().getId(), ProjectStatus.STARTED)) return false;
@@ -98,14 +104,14 @@ public class ProjectServiceImpl implements ProjectService {
         // Check duplicate name.
         if (projectRepository.findByName(body.getName()).isPresent())
             throw new EntityExistsException("Project name already exists");
-        Project p = new Project(null, body.getName(), body.getIntro(), body.getDescription(), null, null, null, LocalDateTime.now(),null, null);
+        Project p = new Project(null, body.getName(), body.getIntro(), body.getDescription(), null, null, null, LocalDateTime.now(), null, null);
         if (body.getStartNow()) {
             p.setStartDateTime(LocalDateTime.now());
             p.setStatus(new ProjectStatus(ProjectStatus.STARTED, "Started"));
         } else {
             p.setStatus(new ProjectStatus(ProjectStatus.PRE, "Pre"));
         }
-        p.setOwner(User.builder().id(1L).build());
+        p.setOwner(User.builder().id(UserDetailsImpl.getCurrentUserId()).build());
         projectRepository.saveAndFlush(p);
         return p;
     }
@@ -113,7 +119,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public Boolean deleteItem(Long id) {
-        Long count = projectRepository.deleteByIdAndOwner_Id(id, 1L);
+        Long count = projectRepository.deleteByIdAndOwner_Id(id, UserDetailsImpl.getCurrentUserId());
         return count > 0;
     }
 
@@ -124,7 +130,7 @@ public class ProjectServiceImpl implements ProjectService {
         Optional<Project> po = projectRepository.findByName(body.getName());
         if (po.isPresent() && !id.equals(po.get().getId()))
             throw new EntityExistsException("Project name already exists");
-        po = projectRepository.findByIdAndOwner_Id(id, 1L);
+        po = projectRepository.findByIdAndOwner_Id(id, UserDetailsImpl.getCurrentUserId());
         if (!po.isPresent()) throw new EntityNotFoundException("Project not found");
         Project project = po.get();
         project.setName(body.getName());

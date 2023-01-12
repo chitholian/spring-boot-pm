@@ -14,7 +14,9 @@
                     <th>User ID</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Actions</th>
+                    {#if project && project.ownerId === $user.id}
+                        <th>Actions</th>
+                    {/if}
                 </tr>
                 </thead>
                 <tbody>
@@ -24,13 +26,13 @@
                         <td>{item.id}</td>
                         <td class="text-left">{item.name}</td>
                         <td class="text-left">{item.email}</td>
-                        <td>
-                            {#if project && project.ownerId === 1}
+                        {#if project && project.ownerId === $user.id}
+                            <td>
                                 <i class="fas fa-minus-circle text-red-500 cursor-pointer"
                                    on:click={() => removeUser(item)}
                                    title="Remove Member"></i>
-                            {/if}
-                        </td>
+                            </td>
+                        {/if}
                     </tr>
                 {/each}
                 {#if !items.length}
@@ -40,15 +42,17 @@
                 {/if}
                 </tbody>
             </table>
-            <form class="border rounded-md mt-2 p-2 flex justify-end" on:submit|preventDefault={addMember}>
-                <div class="text-input">
-                    <label for="email">Email Address</label>
-                    <input type="email" name="email" id="email" class="text-field" bind:value={emailToAdd} required>
-                </div>
-                <button class="btn ml-2" type="submit">
-                    <i class="fas fa-user-plus"></i> Add
-                </button>
-            </form>
+            {#if project.ownerId === $user.id}
+                <form class="border rounded-md mt-2 p-2 flex justify-end" on:submit|preventDefault={addMember}>
+                    <div class="text-input">
+                        <label for="email">Email Address</label>
+                        <input type="email" name="email" id="email" class="text-field" bind:value={emailToAdd} required>
+                    </div>
+                    <button class="btn ml-2" type="submit">
+                        <i class="fas fa-user-plus"></i> Add
+                    </button>
+                </form>
+            {/if}
             {#if error}
                 <div class="text-red-500 m-1 text-center">{error}</div>
             {/if}
@@ -62,6 +66,7 @@
     import BasePage from "../../../../lib/components/BasePage.svelte";
     import {onMount} from "svelte";
     import {setMenu} from "$lib/stores/menu.store.js";
+    import {user} from "$lib/stores/user.store.js";
 
     onMount(() => {
         setMenu('projects')
@@ -104,6 +109,7 @@
         fetchProject()
         fetchMembers()
     })
+
     function addMember() {
         loaders++
         projectService.addMembers($page.params.id, [emailToAdd]).then(({data}) => {

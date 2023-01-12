@@ -3,8 +3,7 @@ import Config from "$lib/Config.js";
 
 export default {
     fetchProjects(page = 1, perPage = 20) {
-        let uid = 1;
-        return axios.get(Config.apiBase + '/users/' + uid + '/projects', {
+        return axios.get(Config.apiBase + '/projects', {
             data: {
                 page,
                 perPage,

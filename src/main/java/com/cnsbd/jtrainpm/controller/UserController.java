@@ -1,7 +1,6 @@
 package com.cnsbd.jtrainpm.controller;
 
 import com.cnsbd.jtrainpm.annotation.ApiPrefixController;
-import com.cnsbd.jtrainpm.dto.IUserInfo;
 import com.cnsbd.jtrainpm.dto.LoginRequest;
 import com.cnsbd.jtrainpm.dto.RegisterRequest;
 import com.cnsbd.jtrainpm.exception.AuthFailedException;
@@ -94,11 +93,6 @@ public class UserController {
     @GetMapping("/users/{id}")
     public JsonResponse item(@PathVariable("id") Long userId) {
         return new JsonResponse(userService.findById(userId));
-    }
-
-    @GetMapping("/users/{id}/projects")
-    public JsonResponse projects(@PathVariable("id") Long userId) {
-        return new JsonResponse(userService.getProjects(userId));
     }
 
     @GetMapping("/who-am-i")

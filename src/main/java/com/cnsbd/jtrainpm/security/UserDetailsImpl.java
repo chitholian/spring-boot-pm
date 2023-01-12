@@ -2,7 +2,9 @@ package com.cnsbd.jtrainpm.security;
 
 import com.cnsbd.jtrainpm.model.User;
 import com.cnsbd.jtrainpm.model.UserStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -63,5 +65,10 @@ public class UserDetailsImpl implements UserDetails {
             return false;
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(this.user.getId(), user.getId());
+    }
+
+    public static Long getCurrentUserId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return ((UserDetailsImpl) auth.getPrincipal()).getId();
     }
 }

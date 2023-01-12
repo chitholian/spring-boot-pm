@@ -31,7 +31,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT t.id as id, t.status.id as statusId, t.status.title as statusName," +
             " t.members.size as memberCount, t.owner.id as ownerId, t.owner.name as ownerName, t.name as projectName," +
             " t.startDateTime as startDate, t.endDateTime as endDate, t.intro as intro, t.description as description" +
-            " FROM Project t LEFT JOIN t.members m ON :uid IN m.id WHERE t.owner.id = :uid")
+            " FROM Project t LEFT JOIN t.members m ON :uid IN m.id WHERE t.owner.id = :uid OR :uid IN m.id")
     List<IUserProject> getProjects(@Param("uid") Long userId);
 
     @Query("SELECT u.id as id, u.name as name, u.email as email, u.username as username, u.status.id as statusId, " +

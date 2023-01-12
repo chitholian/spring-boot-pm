@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProjectService {
-    List<IUserProject> getItems(Long userId);
+    List<IUserProject> getItems();
 
     List<IProjectUser> getMembers(Long projectId);
 

@@ -2,19 +2,20 @@ package com.cnsbd.jtrainpm.controller;
 
 import com.cnsbd.jtrainpm.dto.AddMembersRequest;
 import com.cnsbd.jtrainpm.dto.CreateProjectRequest;
+import com.cnsbd.jtrainpm.dto.IUserProject;
 import com.cnsbd.jtrainpm.dto.RemoveMembersRequest;
 import com.cnsbd.jtrainpm.model.JsonResponse;
 import com.cnsbd.jtrainpm.model.Project;
 import com.cnsbd.jtrainpm.repository.ProjectRepository;
+import com.cnsbd.jtrainpm.security.UserDetailsImpl;
 import com.cnsbd.jtrainpm.service.ProjectService;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.cnsbd.jtrainpm.annotation.ApiPrefixController;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @ApiPrefixController
 @RestController
@@ -24,9 +25,16 @@ public class ProjectController {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @GetMapping("/projects")
+    public JsonResponse items() {
+        return new JsonResponse(projectService.getItems());
+    }
+
     @GetMapping("/projects/{id}")
     public JsonResponse item(@PathVariable("id") Long id) {
-        return new JsonResponse(projectService.getItem(id));
+        Optional<IUserProject> op = projectService.getItem(id);
+        if (!op.isPresent()) throw new EntityNotFoundException("Project not found");
+        return new JsonResponse(op);
     }
 
     @DeleteMapping("/projects/{id}")
@@ -65,7 +73,7 @@ public class ProjectController {
     public JsonResponse create(@RequestBody @Valid CreateProjectRequest body) throws Exception {
         Project p = projectService.createProject(body);
         if (p == null) throw new Exception("Failed to create project");
-        return new JsonResponse(projectRepository.findByProjectId(p.getId()));
+        return new JsonResponse(projectRepository.findByProjectId(p.getId(), UserDetailsImpl.getCurrentUserId()));
     }
 
     @PatchMapping("/projects/{id}/start")

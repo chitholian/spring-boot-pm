@@ -17,6 +17,7 @@
                 <th>Sl.</th>
                 <th>ID</th>
                 <th>Title</th>
+                <th>Owner</th>
                 <th>Contributors</th>
                 <th>Status</th>
                 <th>Start Date</th>
@@ -30,6 +31,13 @@
                     <td>{i + 1}</td>
                     <td>{item.id}</td>
                     <td class="text-left">{item.projectName}</td>
+                    <td class="text-left">
+                        {#if item.ownerId === $user.id}
+                            <span class="font-bold">Me</span>
+                        {:else}
+                            {item.ownerName}
+                        {/if}
+                    </td>
                     <td>
                         <a href="/projects/{item.id}/contributors" title="Show Contributors">
                             {item.memberCount + 1}
@@ -51,9 +59,10 @@
                         <a href="/projects/{item.id}" title="Show Details">
                             <i class="fas fa-external-link"></i>
                         </a>
-                        {#if item.ownerId === 1 && item.statusId === 0}
-                            <button class="fas fa-play ml-2 text-green-500 cursor-pointer" on:click={() => startProject(item)}
-                               title="Start Project"></button>
+                        {#if item.ownerId === $user.id && item.statusId === 0}
+                            <button class="fas fa-play ml-2 text-green-500 cursor-pointer"
+                                    on:click={() => startProject(item)}
+                                    title="Start Project"></button>
                         {:else}
                             <button class="fas invisible fa-play ml-2"></button>
                         {/if}
@@ -78,6 +87,7 @@
     import {extractErr} from "$lib/helpers.js";
     import BasePage from "$lib/components/BasePage.svelte";
     import {setMenu} from "$lib/stores/menu.store.js";
+    import {user} from "$lib/stores/user.store.js";
 
     onMount(() => {
         setMenu('projects')
@@ -96,7 +106,7 @@
     }
 
     function startProject(item) {
-        if(!confirm("Are you sure to START this project ?")) return;
+        if (!confirm("Are you sure to START this project ?")) return;
         loaders++
         projectService.startProject(item.id).then(({data}) => {
             fetchProjects()
@@ -105,6 +115,7 @@
             [error, errors] = extractErr(err)
         }).finally(() => loaders--)
     }
+
     function printProjectReport() {
 
     }

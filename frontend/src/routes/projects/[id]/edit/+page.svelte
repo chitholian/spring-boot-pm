@@ -5,6 +5,7 @@
     import {goto} from "$app/navigation";
     import {page} from "$app/stores";
     import {onMount} from "svelte";
+    import {user} from "$lib/stores/user.store.js";
 
     let form = {
         name: '',
@@ -18,6 +19,10 @@
         loaders++
         projectService.fetchProject($page.params.id).then(({data}) => {
             if (data.status === 200) {
+                if (data.data.ownerId !== $user.id) {
+                    goto('/projects', {replaceState: true});
+                    return;
+                }
                 project = data.data
                 form.name = project.projectName
                 form.intro = project.intro
@@ -69,9 +74,9 @@
                     Update
                 </button>
             </div>
-            {#if error}
-                <div class="text-red-500 mt-2 text-center">{error}</div>
-            {/if}
         </form>
+    {/if}
+    {#if error}
+        <div class="text-red-500 mt-2 text-center">{error}</div>
     {/if}
 </BasePage>

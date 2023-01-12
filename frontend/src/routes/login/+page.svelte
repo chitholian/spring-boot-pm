@@ -34,7 +34,6 @@
     import {goto} from "$app/navigation";
     import {extractErr} from "$lib/helpers.js";
     import BasePage from "../../lib/components/BasePage.svelte";
-    import {user} from "$lib/stores/user.store.js";
 
     let form = {
         username: '',

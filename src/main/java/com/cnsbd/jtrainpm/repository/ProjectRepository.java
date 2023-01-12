@@ -18,18 +18,18 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Query(value = "SELECT t.id as id, t.createdAt as createdAt, t.status.id as statusId, t.status.title as statusName," +
             " t.members.size as memberCount, t.owner.id as ownerId, t.owner.name as ownerName, t.name as projectName," +
             " t.startDateTime as startDate, t.endDateTime as endDate, t.intro as intro, t.description as description" +
-            " FROM Project t WHERE t.id = :id")
-    Optional<IUserProject> findByProjectId(@Param("id") Long id);
+            " FROM Project t LEFT JOIN t.members m ON :uid IN m.id WHERE t.id = :id AND (t.owner.id = :uid OR :uid IN m.id)")
+    Optional<IUserProject> findByProjectId(@Param("id") Long id, @Param("uid") Long uid);
 
     Optional<Project> findById(Long id);
 
     @Modifying
-    @Query(value = "DELETE FROM projects_members WHERE project_id = :pid AND members_id = :mid", nativeQuery = true)
+    @Query(value = "DELETE FROM projects_members WHERE member_of_projects_id = :pid AND members_id = :mid", nativeQuery = true)
     void removeMemberByUserId(@Param("pid") Long id, @Param("mid") Long uid);
 
     @Modifying(flushAutomatically = true)
-    @Query(value = "INSERT INTO projects_members (project_id, members_id, member_of_projects_id) " +
-            "VALUES(:pid, :uid, :pid)", nativeQuery = true)
+    @Query(value = "INSERT INTO projects_members (members_id, member_of_projects_id) " +
+            "VALUES(:uid, :pid)", nativeQuery = true)
     void addMemberByUserId(@Param("pid") Long id, @Param("uid") Long uid);
 
     Optional<Project> findByIdAndMembers_Id(Long id, Long memberId);
