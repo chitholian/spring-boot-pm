@@ -17,7 +17,7 @@
             </div>
             <div class="text-sm italic">{project.intro}</div>
         </div>
-        <div class="flex justify-center text-center">
+        <div class="md:flex justify-center text-center">
             <div class="basis-1/3 m-1 card">
                 <i class="fas fa-user stats-icon bg-blue-100"></i> <br>
                 Owner <br>
@@ -63,7 +63,7 @@
                         <i class="fas fa-stop-circle"></i> End Project
                     </button>
                 {/if}
-                <button class="btn rounded-md px-2 border-0 bg-red-500 text-white float-right"
+                <button class="btn rounded-md px-2 border-0 bg-red-500 text-white md:float-right"
                         on:click={deleteProject}>
                     <i class="fas fa-trash"></i> Delete This Project
                 </button>

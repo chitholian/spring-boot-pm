@@ -2,6 +2,7 @@ package com.cnsbd.jtrainpm.repository;
 
 import com.cnsbd.jtrainpm.dto.IUserInfo;
 import com.cnsbd.jtrainpm.dto.IUserProject;
+import com.cnsbd.jtrainpm.dto.IUserProjectCounts;
 import com.cnsbd.jtrainpm.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -39,4 +40,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "u.projects.size as projectCount, u.memberOfProjects.size as contribCount " +
             "FROM User u WHERE u.id = :id")
     Optional<IUserInfo> findByUserId(@Param("id") Long userId);
+
+    @Query("SELECT u.projects.size as createdItems, u.memberOfProjects.size as contributedItems FROM User u WHERE u.id = :uid")
+    IUserProjectCounts getUserProjectCounts(@Param("uid") Long uid);
 }

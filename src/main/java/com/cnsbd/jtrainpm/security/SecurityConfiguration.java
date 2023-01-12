@@ -59,7 +59,7 @@ class SecurityConfiguration {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers(apiPrefix + "/register", apiPrefix + "/login").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers(apiPrefix).authenticated();
         httpSecurity.authenticationProvider(authenticationProvider());
         httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 

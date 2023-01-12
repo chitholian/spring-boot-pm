@@ -25,7 +25,7 @@
 </script>
 
 <BasePage title="Create Project">
-    <form class="card max-w-[512px] m-auto mt-2" method="post" on:submit|preventDefault={submitForm}>
+    <form class="card max-w-[512px] m-auto m-auto" method="post" on:submit|preventDefault={submitForm}>
         <div class="font-bold pb-2">Create New Project</div>
         <div class="text-input mt-2">
             <label for="name">Title</label>

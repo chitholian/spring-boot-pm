@@ -50,4 +50,7 @@ export default {
             goto('/login', {replaceState: true})
         }
     },
+    getDashboardData() {
+        return axios.get(Config.apiBase + '/dashboard-data')
+    }
 }
