@@ -70,7 +70,7 @@
                           bind:value={form.description}></textarea>
             </div>
             <div class="mt-2 flex justify-between items-center">
-                <button class="btn" type="submit" disabled={loaders > 0 || !form.name}>
+                <button class="btn btn-primary" type="submit" disabled={loaders > 0 || !form.name}>
                     Update
                 </button>
             </div>

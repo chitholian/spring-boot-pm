@@ -48,7 +48,7 @@
                 <input id="startNow" name="startNow" type="checkbox" class="cb" bind:checked={form.startNow}>
                 <label for="startNow">Start Immediately</label>
             </div>
-            <button class="btn" type="submit" disabled={loaders > 0 || !form.name}>
+            <button class="btn btn-primary" type="submit" disabled={loaders > 0 || !form.name}>
                 Submit
             </button>
         </div>

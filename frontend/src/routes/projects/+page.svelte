@@ -2,8 +2,8 @@
     <div class="card">
         <div class="font-bold pb-2">
             List of Projects
-            <button class="btn" title="Print Report" on:click={printProjectReport}>
-                <i class="fas fa-print"></i>
+            <button class="btn" title="Download PDF Report" on:click={printProjectReport}>
+                <i class="fas fa-file-pdf"></i>
             </button>
             <div class="float-right">
                 <a role="button" class="btn" href="/projects/create">
@@ -49,7 +49,7 @@
                         {:else if item.statusId === 1}
                             <i class="text-blue-500 fas fa-dashboard"></i>
                         {:else if item.statusId === 3}
-                            <i class="text-green-500 fas fa-check"></i>
+                            <i class="text-green-500 fas fa-check-circle"></i>
                         {/if}
                         {item.statusName}
                     </td>
@@ -71,7 +71,7 @@
             {/each}
             {#if !projects.length}
                 <tr>
-                    <td colspan="8" class="p-2 text-black bg-yellow-100 text-center">No Data Available</td>
+                    <td colspan="9" class="p-2 text-black bg-yellow-100 text-center">No Data Available</td>
                 </tr>
             {/if}
             </tbody>

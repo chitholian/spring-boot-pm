@@ -1,5 +1,6 @@
 package com.cnsbd.jtrainpm.security;
 
+import com.cnsbd.jtrainpm.dto.IProjectUser;
 import com.cnsbd.jtrainpm.model.User;
 import com.cnsbd.jtrainpm.model.UserStatus;
 import org.springframework.security.core.Authentication;
@@ -70,5 +71,14 @@ public class UserDetailsImpl implements UserDetails {
     public static Long getCurrentUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return ((UserDetailsImpl) auth.getPrincipal()).getId();
+    }
+
+    public static User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return ((UserDetailsImpl) auth.getPrincipal()).getUser();
+    }
+
+    private User getUser() {
+        return this.user;
     }
 }

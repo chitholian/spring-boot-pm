@@ -9,7 +9,6 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.*;
 
@@ -19,19 +18,19 @@ public class ReportServiceImpl implements ReportService {
     private UserService userService;
 
     @Override
-    public void printProjectList() {
+    public byte[] printProjectList() {
         Long userId = UserDetailsImpl.getCurrentUserId();
         List<IUserProject> projects = userService.getProjects(userId);
         try {
-            File pdfFile = File.createTempFile("project-list", ".pdf");
             final JasperReport report = loadTemplate();
             final Map<String, Object> parameters = parameters(projects);
             final JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Collections.singletonList("projects"));
             final JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataSource);
-            JasperExportManager.exportReportToPdfFile(jasperPrint, pdfFile.getAbsolutePath());
+            return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return new byte[0];
     }
 
     private JasperReport loadTemplate() throws JRException {
@@ -43,7 +42,7 @@ public class ReportServiceImpl implements ReportService {
 
     private Map<String, Object> parameters(List<IUserProject> projects) {
         final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("projects", projects);
+        parameters.put("UserName", UserDetailsImpl.getCurrentUser().getName());
         return parameters;
     }
 }
