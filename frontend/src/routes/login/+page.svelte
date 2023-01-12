@@ -46,7 +46,7 @@
     function submitForm() {
         authService.login(form.username, form.password).then(({data}) => {
             if (data.status === 200) {
-                $user = data.data.user;
+                authService.storeAuthInfo(data.data.user, data.data.jwt);
                 goto('/', {replaceState: true})
             }
         }).catch(err => {

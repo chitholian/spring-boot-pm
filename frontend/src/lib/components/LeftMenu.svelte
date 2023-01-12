@@ -36,6 +36,7 @@
     import {menu} from "$lib/stores/menu.store.js";
     import {onMount} from "svelte";
     import {goto} from "$app/navigation";
+    import authService from "$lib/services/auth.service.js";
 
     let isOpen = false;
 
@@ -54,7 +55,6 @@
 
     function logout() {
         if(!confirm('Are you sure to logout ?')) return;
-        //TODO: Logout.
-        goto('/login', {replaceState: true});
+        authService.logout()
     }
 </script>

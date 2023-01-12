@@ -6,6 +6,8 @@ import com.cnsbd.jtrainpm.dto.LoginRequest;
 import com.cnsbd.jtrainpm.dto.RegisterRequest;
 import com.cnsbd.jtrainpm.exception.AuthFailedException;
 import com.cnsbd.jtrainpm.model.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -15,8 +17,6 @@ public interface UserService extends UserDetailsService {
     List<User> getItems();
 
     User createUser(RegisterRequest body);
-
-    User login(LoginRequest body) throws AuthFailedException;
 
     boolean approve(Long id);
 
