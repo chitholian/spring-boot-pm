@@ -1,6 +1,7 @@
 package com.cnsbd.jtrainpm.security;
 
 import com.cnsbd.jtrainpm.dto.IProjectUser;
+import com.cnsbd.jtrainpm.exception.AuthFailedException;
 import com.cnsbd.jtrainpm.model.User;
 import com.cnsbd.jtrainpm.model.UserStatus;
 import org.springframework.security.core.Authentication;
@@ -73,8 +74,9 @@ public class UserDetailsImpl implements UserDetails {
         return ((UserDetailsImpl) auth.getPrincipal()).getId();
     }
 
-    public static User getCurrentUser() {
+    public static User getCurrentUser() throws AuthFailedException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!auth.isAuthenticated() || Objects.equals(auth.getPrincipal(), "anonymousUser")) throw new AuthFailedException("Unauthorized");
         return ((UserDetailsImpl) auth.getPrincipal()).getUser();
     }
 

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.Objects;
 
 @RestController
 @ApiPrefixController
@@ -96,8 +97,9 @@ public class UserController {
     }
 
     @GetMapping("/who-am-i")
-    public JsonResponse whoAmI() {
+    public JsonResponse whoAmI() throws AuthFailedException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!auth.isAuthenticated() || Objects.equals(auth.getPrincipal(), "anonymousUser")) throw new AuthFailedException("Unauthorized");
         UserDetailsImpl info = (UserDetailsImpl) auth.getPrincipal();
         return new JsonResponse(new Object() {
             @JsonProperty

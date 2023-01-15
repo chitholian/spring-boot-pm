@@ -37,7 +37,7 @@ public class JwtUtils {
             return true;
         } catch (SignatureException | IllegalArgumentException | MalformedJwtException | ExpiredJwtException |
                  UnsupportedJwtException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         return false;

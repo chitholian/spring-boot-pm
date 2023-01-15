@@ -1,6 +1,7 @@
 package com.cnsbd.jtrainpm.service;
 
 import com.cnsbd.jtrainpm.dto.IUserProject;
+import com.cnsbd.jtrainpm.exception.AuthFailedException;
 import com.cnsbd.jtrainpm.security.UserDetailsImpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -40,7 +41,7 @@ public class ReportServiceImpl implements ReportService {
         return JasperCompileManager.compileReport(jasperDesign);
     }
 
-    private Map<String, Object> parameters(List<IUserProject> projects) {
+    private Map<String, Object> parameters(List<IUserProject> projects) throws AuthFailedException {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("UserName", UserDetailsImpl.getCurrentUser().getName());
         return parameters;
