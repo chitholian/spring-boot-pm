@@ -1,6 +1,7 @@
 package com.cnsbd.jtrainpm.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
 import java.util.Date;

@@ -24,8 +24,8 @@ public class ReportServiceImpl implements ReportService {
         List<IUserProject> projects = userService.getProjects(userId);
         try {
             final JasperReport report = loadTemplate();
-            final Map<String, Object> parameters = parameters(projects);
-            final JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Collections.singletonList("projects"));
+            final Map<String, Object> parameters = parameters();
+            final JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(projects);
             final JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataSource);
             return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (Exception e) {
@@ -41,7 +41,7 @@ public class ReportServiceImpl implements ReportService {
         return JasperCompileManager.compileReport(jasperDesign);
     }
 
-    private Map<String, Object> parameters(List<IUserProject> projects) throws AuthFailedException {
+    private Map<String, Object> parameters() throws AuthFailedException {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("UserName", UserDetailsImpl.getCurrentUser().getName());
         return parameters;
